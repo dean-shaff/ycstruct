@@ -1,0 +1,27 @@
+{
+  "name": "ycstruct",
+  "version": "0.0.1",
+  "description": "Just like Python's struct module, pack/unpack values to/from buffer.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --require should --compilers coffee:coffee-script/register --recursive",
+    "build": "coffee -bc test/struct.coffee lib/struct.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/huyx/ycstruct.git"
+  },
+  "keywords": [
+    "buffer",
+    "struct"
+  ],
+  "author": "huyx",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/huyx/ycstruct/issues"
+  },
+  "homepage": "https://github.com/huyx/ycstruct",
+  "devDependencies": {
+    "should": "^3.3.2"
+  }
+}

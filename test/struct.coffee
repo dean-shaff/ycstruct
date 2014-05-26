@@ -9,10 +9,10 @@ describe 'Struct', ->
       new Struct('<x').endian.should.equal 'LE'
 
     it 'single format charactor', ->
-      new Struct 'xbBhHiIfds='
+      new Struct 'xbBhHiIfdsR'
 
-    it 'format charactor with size', ->
-      new Struct '2b5s5='
+    it 'format charactor with size/count', ->
+      new Struct '2b5s5R'
 
   it '#size', ->
     new Struct('x').size.should.equal 1
@@ -70,13 +70,8 @@ describe 'Struct', ->
       buff = st.pack 'A', 'AB', 'ABCD', 'AB'
       assert.deepEqual buff, new Buffer('4141424142434142eeee', 'hex')
 
-    it 'string encoding', ->
-      st = new Struct 's2s3s4s', 0x00, 'hex'
-      buff = st.pack '41', '4142', '41424344', '4142'
-      assert.deepEqual buff, new Buffer('41414241424341420000', 'hex')
-
     it 'buffer', ->
-      st = new Struct '=2=3=4=', 0xbb
+      st = new Struct 'R2R3R4R', 0xbb
       buff = st.pack new Buffer('A'), new Buffer('AB'), new Buffer('ABCD'), new Buffer('AB')
       assert.deepEqual buff, new Buffer('4141424142434142bbbb', 'hex')
 
@@ -86,13 +81,8 @@ describe 'Struct', ->
       buff = new Buffer('41414241424341420000', 'hex')
       assert.deepEqual st.unpack(buff), ['A', 'AB', 'ABC', 'AB\x00\x00']
 
-    it 'string encoding', ->
-      st = new Struct 's2s3s4s', 0x00, 'hex'
-      buff = new Buffer('41414241424341420000', 'hex')
-      assert.deepEqual st.unpack(buff), ['41', '4142', '414243', '41420000']
-
     it 'buffer', ->
-      st = new Struct '=2=3=4=', 0xbb
+      st = new Struct 'R2R3R4R', 0xbb
       buff = new Buffer('4141424142434142bbbb', 'hex')
       expected = [new Buffer('A'), new Buffer('AB'), new Buffer('ABC'), new Buffer('4142bbbb', 'hex')]
       assert.deepEqual st.unpack(buff), expected

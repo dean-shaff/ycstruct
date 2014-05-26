@@ -1,7 +1,7 @@
 class Struct
   endian: 'BE'
 
-  constructor: (@format, @fill = null, @encoding = 'binary') ->
+  constructor: (@format, @fill = null) ->
     @fmts = []
 
     offset = 0
@@ -13,13 +13,13 @@ class Struct
       @endian = 'LE'
       format = format[1..]
 
-    for fmt in format.match /[0-9]*./g
+    for fmt in format.match /\d*\S/g
       if fmt.length > 1
         count = parseInt fmt
         fmt = fmt[fmt.length - 1]
       else
         count = 1
-      if fmt is 's' or fmt is '='
+      if fmt is 's' or fmt is 'R'
         @fmts.push [offset, fmt, count]
         offset += count
         continue
@@ -72,8 +72,8 @@ class Struct
           when 'I' then buff.writeUInt32BE  value, offset
           when 'f' then buff.writeFloatBE   value, offset
           when 'd' then buff.writeDoubleBE  value, offset
-          when 's' then buff.write  value, offset, Math.min(value.length, size), @encoding
-          when '=' then value.copy  buff, offset, 0, Math.min(value.length, size)
+          when 's' then buff.write  value, offset, Math.min(value.length, size), 'utf8'
+          when 'R' then value.copy  buff, offset, 0, Math.min(value.length, size)
     else
       for i in [0...count]
         [offset, fmt, size] = fmts[i]
@@ -87,8 +87,8 @@ class Struct
           when 'I' then buff.writeUInt32LE  value, offset
           when 'f' then buff.writeFloatLE   value, offset
           when 'd' then buff.writeDoubleLE  value, offset
-          when 's' then buff.write  value, offset, Math.min(value.length, size), @encoding
-          when '=' then value.copy  buff, offset, 0, Math.min(value.length, size)
+          when 's' then buff.write  value, offset, Math.min(value.length, size), 'utf8'
+          when 'R' then value.copy  buff, offset, 0, Math.min(value.length, size)
     buff
 
   unpack: (buff) ->
@@ -105,8 +105,8 @@ class Struct
           when 'I' then results.push buff.readUInt32BE  offset
           when 'f' then results.push buff.readFloatBE   offset
           when 'd' then results.push buff.readDoubleBE  offset
-          when 's' then results.push buff.toString      @encoding, offset, offset + size
-          when '=' then results.push buff.slice         offset, offset + size
+          when 's' then results.push buff.toString      'utf8', offset, offset + size
+          when 'R' then results.push buff.slice         offset, offset + size
     else
       for [offset, fmt, size] in fmts
         switch fmt
@@ -118,8 +118,8 @@ class Struct
           when 'I' then results.push buff.readUInt32LE  offset
           when 'f' then results.push buff.readFloatLE   offset
           when 'd' then results.push buff.readDoubleLE  offset
-          when 's' then results.push buff.toString      @encoding, offset, offset + size
-          when '=' then results.push buff.slice         offset, offset + size
+          when 's' then results.push buff.toString      'utf8', offset, offset + size
+          when 'R' then results.push buff.slice         offset, offset + size
     results
           
 module.exports = Struct

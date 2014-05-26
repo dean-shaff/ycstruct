@@ -21,18 +21,24 @@ The following charactor can be:
     I    unsigned int32
     f    float
     d    double
-    s    string
-    =    buffer
+    s    string (utf8)
+    R    buffer
 
 Format charactor can has a number prefix:
 
 - for string and buffer, it's the length of value
 - for other format charactor, it's the count of value
 
+When pack/unpack string, only "utf8" encoding is supported, if you want to use other
+encoding, try to convert them to Buffer.
+
+- before pack: s = new Buffer(s, 'binary')
+- after unpack: s = s.toString('binary')
+
 API
 ---
 
-  Struct(format, fill = 0x00, encoding = 'binary')
+  Struct(format, fill = 0x00)
     pack(...)
     unpack(buff)
 
@@ -55,5 +61,18 @@ Usage
     st.pack(1234, 1234, 1234)
 
     # pack string
-    st = new Struct('12s5s', 0x00, 'binary')
+    st = new Struct('12s5s', 0x00)
     buff = st.pack('hello', 'world')
+
+ChangeLog
+---------
+
+0.1.0
+
+- remove encoding argument from Struct#constructor, only "utf8" string is supported
+- buffer format char changed from "=" to "R"
+- allow space in format string, and space is ignore
+
+0.0.1
+
+- initialize version

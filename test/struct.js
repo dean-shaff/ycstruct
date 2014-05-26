@@ -13,10 +13,10 @@ describe('Struct', function() {
       return new Struct('<x').endian.should.equal('LE');
     });
     it('single format charactor', function() {
-      return new Struct('xbBhHiIfds=');
+      return new Struct('xbBhHiIfdsR');
     });
-    return it('format charactor with size', function() {
-      return new Struct('2b5s5=');
+    return it('format charactor with size/count', function() {
+      return new Struct('2b5s5R');
     });
   });
   it('#size', function() {
@@ -86,15 +86,9 @@ describe('Struct', function() {
       buff = st.pack('A', 'AB', 'ABCD', 'AB');
       return assert.deepEqual(buff, new Buffer('4141424142434142eeee', 'hex'));
     });
-    it('string encoding', function() {
-      var buff, st;
-      st = new Struct('s2s3s4s', 0x00, 'hex');
-      buff = st.pack('41', '4142', '41424344', '4142');
-      return assert.deepEqual(buff, new Buffer('41414241424341420000', 'hex'));
-    });
     return it('buffer', function() {
       var buff, st;
-      st = new Struct('=2=3=4=', 0xbb);
+      st = new Struct('R2R3R4R', 0xbb);
       buff = st.pack(new Buffer('A'), new Buffer('AB'), new Buffer('ABCD'), new Buffer('AB'));
       return assert.deepEqual(buff, new Buffer('4141424142434142bbbb', 'hex'));
     });
@@ -106,15 +100,9 @@ describe('Struct', function() {
       buff = new Buffer('41414241424341420000', 'hex');
       return assert.deepEqual(st.unpack(buff), ['A', 'AB', 'ABC', 'AB\x00\x00']);
     });
-    it('string encoding', function() {
-      var buff, st;
-      st = new Struct('s2s3s4s', 0x00, 'hex');
-      buff = new Buffer('41414241424341420000', 'hex');
-      return assert.deepEqual(st.unpack(buff), ['41', '4142', '414243', '41420000']);
-    });
     return it('buffer', function() {
       var buff, expected, st;
-      st = new Struct('=2=3=4=', 0xbb);
+      st = new Struct('R2R3R4R', 0xbb);
       buff = new Buffer('4141424142434142bbbb', 'hex');
       expected = [new Buffer('A'), new Buffer('AB'), new Buffer('ABC'), new Buffer('4142bbbb', 'hex')];
       return assert.deepEqual(st.unpack(buff), expected);

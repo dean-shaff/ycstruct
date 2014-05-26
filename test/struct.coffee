@@ -34,13 +34,17 @@ describe 'Struct', ->
 
       it 'unsigned', ->
         st = new Struct 'BHI'
-        buff = st.pack 0x12, 0x1234, 0x12345678
+        args = [0x12, 0x1234, 0x12345678]
+        buff = st.pack args...
         assert.deepEqual buff, new Buffer('12123412345678', 'hex')
+        assert.deepEqual st.unpack(buff), args
 
       it 'multiple unsigned', ->
         st = new Struct '2B2H'
-        buff = st.pack 0x12, 0x23, 0x3456, 0x4567
+        args = [0x12, 0x23, 0x3456, 0x4567]
+        buff = st.pack args...
         assert.deepEqual buff, new Buffer('122334564567', 'hex')
+        assert.deepEqual st.unpack(buff), args
 
     describe 'LE', ->
       it 'signed', ->
@@ -51,13 +55,17 @@ describe 'Struct', ->
 
       it 'unsigned', ->
         st = new Struct '<BHI'
-        buff = st.pack 0x12, 0x1234, 0x12345678
-        assert.deepEqual buff,new Buffer('12341278563412', 'hex')
+        args = [0x12, 0x1234, 0x12345678]
+        buff = st.pack args...
+        assert.deepEqual buff, new Buffer('12341278563412', 'hex')
+        assert.deepEqual st.unpack(buff), args
 
       it 'multiple unsigned', ->
         st = new Struct '<2B2H'
-        buff = st.pack 0x12, 0x23, 0x3456, 0x4567
+        args = [0x12, 0x23, 0x3456, 0x4567]
+        buff = st.pack args...
         assert.deepEqual buff, new Buffer('122356346745', 'hex')
+        assert.deepEqual st.unpack(buff), args
 
   describe '#pack', ->
     it 'string', ->

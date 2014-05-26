@@ -100,7 +100,7 @@ class Struct
           when 'b' then results.push buff.readInt8      offset
           when 'B' then results.push buff.readUInt8     offset
           when 'h' then results.push buff.readInt16BE   offset
-          when 'H' then results.push buff.readUInt16    offset
+          when 'H' then results.push buff.readUInt16BE  offset
           when 'i' then results.push buff.readInt32BE   offset
           when 'I' then results.push buff.readUInt32BE  offset
           when 'f' then results.push buff.readFloatBE   offset
@@ -113,7 +113,7 @@ class Struct
           when 'b' then results.push buff.readInt8      offset
           when 'B' then results.push buff.readUInt8     offset
           when 'h' then results.push buff.readInt16LE   offset
-          when 'H' then results.push buff.readUInt16    offset
+          when 'H' then results.push buff.readUInt16LE  offset
           when 'i' then results.push buff.readInt32LE   offset
           when 'I' then results.push buff.readUInt32LE  offset
           when 'f' then results.push buff.readFloatLE   offset

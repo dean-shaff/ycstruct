@@ -1,6 +1,6 @@
 {
   "name": "ycstruct",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Just like Python's struct module, pack/unpack values to/from buffer.",
   "main": "index.js",
   "scripts": {

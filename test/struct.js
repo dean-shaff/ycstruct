@@ -39,16 +39,20 @@ describe('Struct', function() {
         return assert.deepEqual(numbers, st.unpack(buff));
       });
       it('unsigned', function() {
-        var buff, st;
+        var args, buff, st;
         st = new Struct('BHI');
-        buff = st.pack(0x12, 0x1234, 0x12345678);
-        return assert.deepEqual(buff, new Buffer('12123412345678', 'hex'));
+        args = [0x12, 0x1234, 0x12345678];
+        buff = st.pack.apply(st, args);
+        assert.deepEqual(buff, new Buffer('12123412345678', 'hex'));
+        return assert.deepEqual(st.unpack(buff), args);
       });
       return it('multiple unsigned', function() {
-        var buff, st;
+        var args, buff, st;
         st = new Struct('2B2H');
-        buff = st.pack(0x12, 0x23, 0x3456, 0x4567);
-        return assert.deepEqual(buff, new Buffer('122334564567', 'hex'));
+        args = [0x12, 0x23, 0x3456, 0x4567];
+        buff = st.pack.apply(st, args);
+        assert.deepEqual(buff, new Buffer('122334564567', 'hex'));
+        return assert.deepEqual(st.unpack(buff), args);
       });
     });
     return describe('LE', function() {
@@ -60,16 +64,20 @@ describe('Struct', function() {
         return assert.deepEqual(numbers, st.unpack(buff));
       });
       it('unsigned', function() {
-        var buff, st;
+        var args, buff, st;
         st = new Struct('<BHI');
-        buff = st.pack(0x12, 0x1234, 0x12345678);
-        return assert.deepEqual(buff, new Buffer('12341278563412', 'hex'));
+        args = [0x12, 0x1234, 0x12345678];
+        buff = st.pack.apply(st, args);
+        assert.deepEqual(buff, new Buffer('12341278563412', 'hex'));
+        return assert.deepEqual(st.unpack(buff), args);
       });
       return it('multiple unsigned', function() {
-        var buff, st;
+        var args, buff, st;
         st = new Struct('<2B2H');
-        buff = st.pack(0x12, 0x23, 0x3456, 0x4567);
-        return assert.deepEqual(buff, new Buffer('122356346745', 'hex'));
+        args = [0x12, 0x23, 0x3456, 0x4567];
+        buff = st.pack.apply(st, args);
+        assert.deepEqual(buff, new Buffer('122356346745', 'hex'));
+        return assert.deepEqual(st.unpack(buff), args);
       });
     });
   });

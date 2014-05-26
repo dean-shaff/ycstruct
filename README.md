@@ -67,6 +67,10 @@ Usage
 ChangeLog
 ---------
 
+0.1.1
+
+- BUGFIX: readUInt16 is undefined, should be readUInt16BE/readUInt16LE
+
 0.1.0
 
 - remove encoding argument from Struct#constructor, only "utf8" string is supported
